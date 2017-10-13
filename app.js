@@ -18,6 +18,9 @@ const port = 3000;
 // Allow Cross Origin Resource Sharing
 app.use(cors());
 
+// Set static folder
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Enable Body Parser Middleware
 app.use(bodyparser.json());
 
