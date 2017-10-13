@@ -1,6 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
+// Rregister route
+router.post('/register', (req, res, next)=>{
+	res.send('REGISTER');
+});
+
 // Authentication route
 router.post('/authenticate', (req, res, next)=>{
 	res.send('AUTHENTICATE');
