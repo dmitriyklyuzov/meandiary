@@ -6,8 +6,20 @@ const bodyparser = require('body-parser');
 const cors = require('cors');
 const passport = require('passport');
 const mongoose = require('mongoose');
+const config = require('./config/database');
 
-const users = require('./routes/users');
+// Connect to the db
+mongoose.connect(config.database);
+
+// On connection
+mongoose.connection.on('connected', ()=>{
+	console.log('Connected to database '+config.database);
+})
+
+// On error
+mongoose.connection.on('error', (e)=>{
+	console.log('Database error: '+e);
+})
 
 // Initialize app
 const app = express();
@@ -30,6 +42,7 @@ app.get('/', (req, res)=> {
 });
 
 // Users.js handles users routes
+const users = require('./routes/users');
 app.use('/users', users);
 
 // Start server on defined port
