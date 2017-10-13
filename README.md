@@ -1,1 +1,1 @@
-# meanauthapp
+# MEAN stack app
