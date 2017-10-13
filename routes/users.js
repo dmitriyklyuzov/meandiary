@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 // Authentication route
-router.get('/authenticate', (req, res, next)=>{
+router.post('/authenticate', (req, res, next)=>{
 	res.send('AUTHENTICATE');
 });
 
