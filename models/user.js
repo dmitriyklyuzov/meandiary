@@ -1,12 +1,7 @@
 // User model
 
-// Require mongoose
 const mongoose = require('mongoose');
-
-// Require bcrypt
 const bcrypt = require('bcryptjs');
-
-// Require db config file
 const config = require('../config/database');
 
 // User Schema
@@ -48,7 +43,15 @@ module.exports.getUserById = function(id, callback){
 }
 
 // Get user by email
-module.exports.getUserByEmail = function(id, callback){
-	const query = {email : email}
-	User.findOne(query, callback);f
+module.exports.getUserByEmail = function(email, callback){
+	const query = {email:email};
+	User.findOne(query, callback);
+}
+
+// Compare entered (candidate) password and the hashed password
+module.exports.comparePassword = function(candidatePassword, hash, callback){
+	bcrypt.compare(candidatePassword, hash, (error, isMatch)=>{
+		if(error) throw error;
+		callback(null, isMatch);
+	});
 }

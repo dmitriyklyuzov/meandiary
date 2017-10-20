@@ -1,5 +1,7 @@
 // Just like routes/web.php
 
+	// * * * Requires * * *
+
 const express = require('express');
 const path = require('path');
 const bodyparser = require('body-parser');
@@ -8,8 +10,11 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 const config = require('./config/database');
 
+	
+	// * * * Database * * *
+
 // Connect to the db
-mongoose.connect(config.database);
+mongoose.connect(config.database,{useMongoClient:true});
 
 // On connection
 mongoose.connection.on('connected', ()=>{
@@ -20,6 +25,9 @@ mongoose.connection.on('connected', ()=>{
 mongoose.connection.on('error', (e)=>{
 	console.log('Database error: '+e);
 })
+
+
+	// * * * App Init * * *
 
 // Initialize app
 const app = express();
@@ -33,8 +41,19 @@ app.use(cors());
 // Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Enable Body Parser Middleware
+	
+	// * * * Middleware * * *
+
+// Body Parser Middleware
 app.use(bodyparser.json());
+
+// Passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
+require('./config/passport')(passport);
+
+	
+	// * * * Routes * * *
 
 // Index route
 app.get('/', (req, res)=> {
@@ -44,6 +63,9 @@ app.get('/', (req, res)=> {
 // Users.js handles users routes
 const users = require('./routes/users');
 app.use('/users', users);
+
+
+	// * * * Server * * *
 
 // Start server on defined port
 app.listen(port, () => {
