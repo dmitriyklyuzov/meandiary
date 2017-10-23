@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ValidateService } from '../../services/validate.service';
+import { AuthService } from '../../services/auth.service';
 import { FlashMessagesService } from 'angular2-flash-messages';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +16,12 @@ export class RegisterComponent implements OnInit {
   password: String;
 
   // Any time we use a service in a component, we need to inject it in a constructor of that component
-  constructor(private validateService: ValidateService, private flashMessages: FlashMessagesService) { }
+  constructor(
+  	private validateService: ValidateService,
+  	private flashMessages: FlashMessagesService,
+  	private authService: AuthService,
+  	private router: Router
+  ) { }
 
   ngOnInit() {
   }
@@ -43,6 +50,25 @@ export class RegisterComponent implements OnInit {
   		this.flashMessages.show('Please use a valid email', {cssClass: 'alert-danger', timeout: 3000});
   		return false;
   	}
+
+  	// register user if passed validation
+  	// use registerUser function of the AuthService service, subscribe to an observable
+  	this.authService.registerUser(user).subscribe(data => {
+  		// if backend returns a success:true message
+  		if(data.success){
+  			// display a flash message
+  			this.flashMessages.show('User successfully registered', {cssClass: 'alert-success', timeout: 3000});
+  			// redirect to login page
+  			this.router.navigate(['/login']);
+  		}
+  		// else - backend returned a success:false message, user not registered
+  		else{
+  			// display a flash message
+  			this.flashMessages.show('Something went wrong. Try again', {cssClass: 'alert-danger', timeout: 3000});
+  			// redirect back to register
+  			this.router.navigate(['/register']);
+  		}
+  	});
 
   }
 
