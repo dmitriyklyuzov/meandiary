@@ -10,24 +10,42 @@
       <a class="navbar-brand" [routerLink]="['/']">MEAN</a>
     </div>
     <div id="navbar" class="collapse navbar-collapse">
-    	<!-- Navbar-left -->
-      <!-- <ul class="nav navbar-nav navbar-left">
-        <li><a [routerLink]="['/']">Home</a></li>
-      </ul> -->
-
       <!-- Navbar-right -->
       <ul class="nav navbar-nav navbar-right">
-      	<!-- Login -->
-        <li [routerLinkActive]="['active']" [routerLinkActiveOptions] = "{exact: true}">
-        	<a [routerLink]="['/login']">Login</a>
+              <!-- LOGGED IN -->
+      	<!-- Profile -->
+        <li 
+          *ngIf="authService.loggedIn()"
+          [routerLinkActive]="['active']"
+          [routerLinkActiveOptions] = "{exact: true}">
+          <a [routerLink]="['profile']">Profile</a>
         </li>
-        <!-- Register -->
-        <li [routerLinkActive]="['active']" [routerLinkActiveOptions] = "{exact: true}">
-        	<a [routerLink]="['/register']">Register</a>
+        <!-- Dashboard -->
+        <li
+          *ngIf="authService.loggedIn()"
+          [routerLinkActive]="['active']"
+          [routerLinkActiveOptions] = "{exact: true}">
+          <a [routerLink]="['dashboard']">Dashboard</a>
         </li>
         <!-- Logout -->
-        <li>
+        <li *ngIf="authService.loggedIn()">
           <a href="#" (click)="onLogoutClick()">Logout</a>
+        </li>
+
+              <!-- NOT LOGGED IN -->
+        <!-- Login -->
+        <li
+          *ngIf="!authService.loggedIn()"
+          [routerLinkActive]="['active']"
+          [routerLinkActiveOptions] = "{exact: true}">
+        	<a [routerLink]="['login']">Login</a>
+        </li>
+        <!-- Register -->
+        <li
+          *ngIf="!authService.loggedIn()"
+          [routerLinkActive]="['active']"
+          [routerLinkActiveOptions] = "{exact: true}">
+        	<a [routerLink]="['register']">Register</a>
         </li>
       </ul>
 
