@@ -24,17 +24,18 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ValidateService } from './services/validate.service';
 import { AuthService } from './services/auth.service';
 
+// Importing guards - add to the 'providers', add to the route to protect it
+import { AuthGuard } from './guards/auth.guard';
+
 // Routes like routes/web.php
 // Every path maps to a Component
 const appRoutes: Routes = [
   // Home page
   {path:'', component: HomeComponent},
-  // Register page
   {path:'register', component: RegisterComponent},
-  // Login page
   {path:'login', component: LoginComponent},
-  {path:'dashboard', component: DashboardComponent},
-  {path:'profile', component: ProfileComponent},
+  {path:'dashboard', component: DashboardComponent, canActivate:[AuthGuard]},
+  {path:'profile', component: ProfileComponent, canActivate:[AuthGuard]},
 ]
 
 @NgModule({
@@ -57,7 +58,8 @@ const appRoutes: Routes = [
   ],
   providers: [
     ValidateService,
-    AuthService
+    AuthService,
+    AuthGuard
    ],
   bootstrap: [AppComponent]
 })
