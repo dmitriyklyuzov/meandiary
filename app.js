@@ -64,6 +64,11 @@ app.get('/', (req, res)=> {
 const users = require('./routes/users');
 app.use('/users', users);
 
+// All other routes
+app.use('*', (req, res) => {
+	res.sendFile(path.join(__dirname, 'public/index.html'));
+})
+
 
 	// * * * Server * * *
 
