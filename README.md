@@ -2,6 +2,8 @@
 
 This application is built using NodeJs and implements Passport API authentication using JWT (json web token).
 
+Fork this repo to create a new project with authentication already enabled.
+
 ## Endpoints
 
 ``` POST \users\register ```
